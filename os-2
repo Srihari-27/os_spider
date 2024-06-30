@@ -1,0 +1,77 @@
+# include<stdio.h>
+
+int main(){
+    int m,n;
+    printf("Enter number of processes: ");
+    scanf("%d", &n);
+    printf("Enter number of resources: ");
+    scanf("%d", &m);
+    printf("Enter allocation matrix:\n");
+
+    int alloc[n][m];
+    int max[n][m];
+    int available[m];
+    for (int i = 0; i < n; i++) {
+        for (int j = 0; j < m; j++) {
+            scanf("%d", &alloc[i][j]);
+        }
+    }
+    printf("Enter max claim matrix:\n");
+    for (int i = 0; i < n; i++) {
+        for (int j = 0; j < m; j++) {
+            scanf("%d", &max[i][j]);
+        }
+    }
+    printf("Enter available vector:\n");
+    for (int j = 0; j < m; j++) {
+        scanf("%d", &available[j]);
+    }
+    int need[n][m];
+    int k=0,i=0,j=0;
+    int pol=0;
+    for (int i = 0; i < n; ++i) {
+        for (int j = 0; j < m; ++j) {
+            need[i][j] = max[i][j] - alloc[i][j];
+        }
+    }
+    int flag[n];
+    for(i=0;i<n;i++){
+        flag[i]=0;
+    }
+    alpha :for(i=0;i<n;i++){
+        if(flag[i]==0){
+            for(j=0;j<m;j++){
+                if (need[i][j]<=available[j]){
+                    k++;
+                }
+            }
+            if(k==m){
+                pol=1;
+                flag[i]==1;
+                for(j=0;j<m;j++){
+                    available[j]=available[j]+alloc[n][m];                
+                }
+            }
+            k=0;
+        }
+    }
+    k=0;
+    if(pol==1){
+        pol=0;
+        goto alpha;
+        
+    }
+    else{
+        for(i=0;i<n;i++){
+            if(flag[i]==1){
+                k++;
+            }
+        }
+        if(k==n){
+            printf("its  in safe state, no deadlock detected");
+        }
+        else{
+            printf("its not in safe state,deadlock detected");
+        }
+    } 
+}
